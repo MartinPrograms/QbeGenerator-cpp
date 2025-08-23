@@ -29,15 +29,15 @@ namespace Qbe {
         Block* addBlock(const std::string &name);
         Block* entryPoint();
 
-        Local* getParameterByName(const std::string &name) {
+        ValueReference getParameterByName(const std::string &name) {
             for (auto &param : parameters) {
                 if (param.identifier == name) {
-                    return &param;
+                    return ValueReference(&param);
                 }
             }
-            return nullptr;
+            throw std::runtime_error("Parameter with name '" + name + "' not found in function '" + identifier + "'");
         }
-    
+
     protected:
         std::string EmitImpl(bool is64Bit) override;
         [[nodiscard]] bool IsFunction() const override;
