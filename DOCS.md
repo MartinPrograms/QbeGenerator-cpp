@@ -90,9 +90,20 @@ auto helloWorld = module.addGlobal("Hello, World!\\n");
 In the above sample helloWorld is a pointer to the string literal.
 If your literal is of a different type, you must load it first as `helloWorld` is a pointer.
 
+--- 
+### Blocks
+A `Block` is a container for instructions.  
+The entry point of a function can be accessed using the `Function->entryPoint()` method, which returns a `Block`.  
+You can also create additional blocks using the `Function->addBlock` which can be used for branching and loops.  
+```cpp
+auto loopBlock = main->addBlock("loop");
+loopBlock->addUnconditionalJump(loopBlock); // Infinite loop
+```
+Blocks are where you add instructions using the various methods provided.
+
 ---
 ### Instructions
-Instructions are added to a `BasicBlock` using various `add*` methods.
+Instructions are added to a `Block` using various `add*` methods.
 For example, to add an addition instruction, you can use `addAdd`:
 
 ```cpp
