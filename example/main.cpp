@@ -18,7 +18,7 @@ int main() {
         Qbe::CustomTypeField("name", stringType),
         Qbe::CustomTypeField("age", Qbe::Int32)
     });
-    personType->fields.emplace_back("father", personType); // Recursive type!
+    //personType->fields.emplace_back("father", personType); // Recursive type!
 
     auto printf = module.defineFunction("printf", Qbe::Int32, {}, true);
     auto scanf = module.defineFunction("scanf", Qbe::Int32, {}, true);
@@ -85,6 +85,12 @@ int main() {
     auto main = module.addFunction("main", Qbe::Int32, {}, false, Qbe::FunctionFlags::EntryPoint);
     {
         auto block = main->entryPoint();
+
+        auto threePointFive = block->addCopy(Qbe::CreateLiteral(3.9f));
+        threePointFive = block->addAdd(threePointFive, Qbe::CreateLiteral(10.f));
+        auto stosi = block->addConversion(threePointFive, Qbe::Int32, Qbe::Instructions::ConversionType::FloatToInt, Qbe::Instructions::ConversionSign::Signed);
+        auto extended = block->addConversion(threePointFive, Qbe::Float64, Qbe::Instructions::ConversionType::Extend, Qbe::Instructions::ConversionSign::Signed);
+        block->addCall(printf, {module.addGlobal("%f turned into %d\\n"), extended, stosi});
 
         auto personPointer = block->allocateType(personType, module.is64Bit);
         auto namePointer = block->getFieldAddress(personPointer, personType, "name", module.is64Bit); // Of type 'string'

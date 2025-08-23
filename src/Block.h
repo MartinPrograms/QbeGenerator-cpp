@@ -185,7 +185,9 @@ namespace Qbe {
         }
 
         // Adds an equality instruction that compares two values and returns a result.
+
         // The result is 1 if the comparison is true, 0 otherwise.
+
         ValueReference addEquality(ValueReference lhs, ValueReference rhs, Instructions::EqualityOperation operation, Instructions::EqualityPrimitive primitive) {
             if (lhs.GetType() == nullptr || rhs.GetType() == nullptr) {
                 throw std::runtime_error("LHS and RHS types cannot be null");
@@ -266,6 +268,14 @@ namespace Qbe {
             auto valueReference = toValueReference(local);
             auto* variadicArgInstruction = new Instructions::VariadicArgument(list, valueReference);
             addInstruction(variadicArgInstruction);
+            return valueReference;
+        }
+
+        ValueReference addConversion(ValueReference source, Primitive* targetType, Instructions::ConversionType type, Instructions::ConversionSign sign) {
+            auto *local = createLocal(NameTracker::getNextName(), targetType);
+            auto valueReference = toValueReference(local);
+            auto* instruction = new Instructions::Conversion(source, valueReference, type, sign);
+            addInstruction(instruction);
             return valueReference;
         }
 

@@ -14,5 +14,5 @@
 #include "Call.h"
 #include "Equality.h"
 #include "Variadic.h"
-
+#include "Conversion.h"
 #endif //INSTRUCTIONS_H
