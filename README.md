@@ -23,7 +23,9 @@ auto main = module.addFunction("main", Qbe::Int32, {}, false, Qbe::FunctionFlags
 auto qbeCode = module.emit();
 ```
 
-outputs `Hello, World!` :3
+outputs `Hello, World!` :3  
+
+You can use this project by using fetch content and adding the QbeIR cmake project  
 
 Now you can use the qbe command line tool to compile the generated code to assembly!  
 Check out the docs [here](https://github.com/MartinPrograms/QbeGenerator-cpp/blob/master/DOCS.md)
