@@ -29,6 +29,15 @@ namespace Qbe {
         Block* addBlock(const std::string &name);
         Block* entryPoint();
 
+        Local* getParameterByName(const std::string &name) {
+            for (auto &param : parameters) {
+                if (param.identifier == name) {
+                    return &param;
+                }
+            }
+            return nullptr;
+        }
+    
     protected:
         std::string EmitImpl(bool is64Bit) override;
         [[nodiscard]] bool IsFunction() const override;

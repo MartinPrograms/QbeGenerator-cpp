@@ -75,7 +75,8 @@ auto main = module.addFunction("main", Qbe::Int32, {}, false, Qbe::FunctionFlags
 }
 ```
 
-We use `defineFunction` to declare external functions (like `printf`), and `addFunction` to define our own functions (like `main`).
+We use `defineFunction` to declare external functions (like `printf`), and `addFunction` to define our own functions (like `main`).  
+You can get parameters by using the `Function->getParameterByName` method. This returns a pointer to a `Local` representing the parameter.
 
 ---
 
