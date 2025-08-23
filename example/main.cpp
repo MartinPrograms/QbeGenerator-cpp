@@ -18,6 +18,7 @@ int main() {
         Qbe::CustomTypeField("name", stringType),
         Qbe::CustomTypeField("age", Qbe::Int32)
     });
+    personType->fields.emplace_back("father", personType); // Recursive type!
 
     auto printf = module.defineFunction("printf", Qbe::Int32, {}, true);
     auto scanf = module.defineFunction("scanf", Qbe::Int32, {}, true);

@@ -9,6 +9,8 @@
 
 #include <fmt/core.h>
 
+#include "NameTracker.h"
+
 namespace Qbe {
     class Primitive : public ITypeDefinition {
     public:
@@ -198,7 +200,12 @@ namespace Qbe {
         [[nodiscard]] long ByteSize(bool is64Bit) const override {
             long size = 0;
             for (const auto& field : fields) {
+                auto s = NameTracker::pushStackIndex();
+                if (s > 1000) {
+                    throw std::runtime_error("Possible infinite recursion detected in CustomType::ByteSize for type '" + identifier + "'. Did you create a recursive type?");
+                }
                 size += field.value->ByteSize(is64Bit);
+                NameTracker::popStackIndex();
             }
             return size;
         }
