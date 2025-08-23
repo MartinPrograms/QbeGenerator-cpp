@@ -25,4 +25,5 @@ auto qbeCode = module.emit();
 
 outputs `Hello, World!` :3
 
-Now you can use the qbe command line tool to compile the generated code to assembly!
+Now you can use the qbe command line tool to compile the generated code to assembly!  
+Check out the docs [here](https://github.com/MartinPrograms/QbeGenerator-cpp/blob/master/DOCS.md)
