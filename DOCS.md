@@ -91,6 +91,13 @@ auto helloWorld = module.addGlobal("Hello, World!\\n");
 In the above sample helloWorld is a pointer to the string literal.
 If your literal is of a different type, you must load it first as `helloWorld` is a pointer.
 
+```cpp
+auto integerLiteral = module.addGlobal(Qbe::CreateLiteral(42));
+auto loadedInteger = block->addLoad(integerLiteral);
+```
+
+In this example, we add an integer literal as a global, and then load it into a register to use it in our code.
+
 --- 
 ### Blocks
 A `Block` is a container for instructions.  

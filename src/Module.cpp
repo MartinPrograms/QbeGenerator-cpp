@@ -58,6 +58,17 @@ namespace Qbe {
         return ValueReference(global);
     }
 
+    ValueReference Module::addGlobal(Qbe::Literal* literal) {
+        if (literal == nullptr) {
+            throw std::runtime_error("Literal cannot be null");
+        }
+
+        auto identifier = NameTracker::getNextName();
+        auto* global = new Global(identifier, literal->Emit(is64Bit));
+        globals.push_back(global);
+        return ValueReference(global);
+    }
+
     ValueReference Module::addGlobal(const std::string& value) {
         if (value.empty()) {
             throw std::runtime_error("Global variable value cannot be empty");
