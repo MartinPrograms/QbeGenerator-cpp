@@ -64,7 +64,7 @@ namespace Qbe {
         }
 
         auto identifier = NameTracker::getNextName();
-        auto* global = new Global(identifier, literal->Emit(is64Bit));
+        auto* global = new Global(identifier, literal->type, literal->Emit(is64Bit));
         globals.push_back(global);
         return ValueReference(global);
     }
