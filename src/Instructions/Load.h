@@ -10,9 +10,6 @@ namespace Qbe::Instructions {
 
         explicit Load(ValueReference source, ValueReference destination, ArithmeticSign sign = ArithmeticSign::Signed)
             : source(std::move(source)), destination(std::move(destination)), sign(sign) {
-            if (destination.kind != ValueReferenceKind::Local) {
-                throw std::runtime_error("Destination must be a local variable");
-            }
             if (source.GetType() == nullptr || !source.GetType()->IsInteger()) {
                 throw std::runtime_error("Source must be an integer type (memory address)");
             }

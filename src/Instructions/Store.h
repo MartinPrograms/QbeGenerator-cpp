@@ -9,9 +9,6 @@ namespace Qbe::Instructions {
 
         explicit Store(ValueReference source, ValueReference destination)
             : source(std::move(source)), destination(std::move(destination)) {
-            if (destination.kind != ValueReferenceKind::Local) {
-                throw std::runtime_error("Destination must be a local variable");
-            }
             if (!destination.GetType()->IsInteger()) {
                 throw std::runtime_error("Destination must be an integer type (memory address)");
             }
