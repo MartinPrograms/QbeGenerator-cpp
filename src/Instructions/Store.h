@@ -20,7 +20,7 @@ namespace Qbe::Instructions {
             Utilities::StringBuilder sb;
 
             sb.Append(fmt::format("store{} {}, {}",
-                                  source.GetType()->GetString(is64Bit),
+                                  destination.GetType()->GetString(is64Bit),
                                   source.Emit(is64Bit),
                                   destination.Emit(is64Bit)));
 
