@@ -21,12 +21,11 @@ namespace Qbe::Instructions {
 
             // The type is either the destination, if the source is a global (since it might be a pointer), or the source otherwise.
             std::string type;
-            if (!source.IsGlobal()) {
-                type = destination.GetType()->GetString(is64Bit);
-            }
-            else {
+            if (source.IsGlobal())
+                // We are storing a global variable, which is a pointer.
+                type = Primitive(TypeDefinitionKind::Pointer).GetString(is64Bit);
+            else
                 type = source.GetType()->GetString(is64Bit);
-            }
 
             sb.Append(fmt::format("store{} {}, {}",
                                   type,
