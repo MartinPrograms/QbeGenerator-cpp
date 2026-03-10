@@ -89,6 +89,13 @@ namespace Qbe {
             throw std::runtime_error("Function identifier cannot be empty");
         }
 
+        if (function->identifier == "main" && !_moduleHasEntry) {
+            // Allow main as an identifier for the entry point function, but only if we don't already have an entry point.
+            // We will rename it to main later if it is indeed the entry point.
+        } else {
+            throw std::runtime_error("Function identifier must be empty for auto-generated names or 'main' for the entry point");
+        }
+
         for (const auto& existingFunction : functions) {
             if (existingFunction->identifier == function->identifier) {
                 throw std::runtime_error("Function with identifier '" + function->identifier + "' already exists");
@@ -104,10 +111,6 @@ namespace Qbe {
             function->identifier = "main";
             _moduleHasEntry = true;
         }
-        else {
-            function->identifier = NameTracker::getNextName();
-        }
-
 
         functions.push_back(function);
         return function;
