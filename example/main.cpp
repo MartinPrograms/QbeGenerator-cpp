@@ -28,7 +28,7 @@ int main() {
     auto readIntegerFunction = module.addFunction("readInteger", Qbe::Int32, {}, false, Qbe::FunctionFlags::None);
     {
         auto block = readIntegerFunction->entryPoint();
-        auto integerLocal = block->addAllocate(Qbe::CreateLiteral((Qbe::Int32)->ByteSize(module.is64Bit)));
+        auto integerLocal = block->addAllocate(Qbe::CreateLiteral((int32_t)(Qbe::Int32)->ByteSize(module.is64Bit)));
         block->addCall(scanf, {module.addGlobal("%d"), integerLocal});
         auto loadedInteger = block->addLoad(integerLocal, Qbe::Int32);
         block->addReturn(loadedInteger);

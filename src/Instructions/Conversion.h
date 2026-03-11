@@ -98,10 +98,9 @@ namespace Qbe::Instructions {
                                             source.Emit(is64Bit)));
             }
             else if (conversion == ConversionType::IntToFloat) {
-                sb.Append(fmt::format("{}{}to{} {}",
+                sb.Append(fmt::format("{}{}tof {}",
                                       sign == ConversionSign::Signed ? "s" : "u",
                                       source.GetType()->GetString(is64Bit),
-                                      destination.GetType()->GetString(is64Bit),
                                       source.Emit(is64Bit)));
             }
 
