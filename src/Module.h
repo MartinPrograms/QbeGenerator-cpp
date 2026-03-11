@@ -22,7 +22,13 @@ public:
 
     [[nodiscard]] std::string emit();
 
+    /// Add global using a primitive type, and a string value. The string value is used as the identifier for the global variable, and can be used in the emitted code to refer to the global variable.
     ValueReference addGlobal(Qbe::Primitive* primitive, const std::string& value);
+
+    /// Add a global variable using a literal value. The literal's type is used as the type of the global variable. It is assigned a unique identifier that can be used in the emitted code to refer to the global variable.
+    ValueReference addGlobal(Qbe::Literal *literal);
+
+    /// Add a global string variable. The string is assigned a unique identifier that can be used in the emitted code to refer to the global variable. The type of the global variable is a pointer (32 or 64 bit, depending on architecture).
     ValueReference addGlobal(const std::string& value);
 
     Function* addFunction(Function* function);

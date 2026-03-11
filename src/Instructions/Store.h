@@ -9,9 +9,6 @@ namespace Qbe::Instructions {
 
         explicit Store(ValueReference source, ValueReference destination)
             : source(std::move(source)), destination(std::move(destination)) {
-            if (destination.kind != ValueReferenceKind::Local) {
-                throw std::runtime_error("Destination must be a local variable");
-            }
             if (!destination.GetType()->IsInteger()) {
                 throw std::runtime_error("Destination must be an integer type (memory address)");
             }
@@ -22,8 +19,16 @@ namespace Qbe::Instructions {
             // store(type) (source) (destination)
             Utilities::StringBuilder sb;
 
+            // The type is either the destination, if the source is a global (since it might be a pointer), or the source otherwise.
+            std::string type;
+            if (source.IsGlobal())
+                // We are storing a global variable, which is a pointer.
+                type = Primitive(TypeDefinitionKind::Pointer).GetString(is64Bit);
+            else
+                type = source.GetType()->GetString(is64Bit);
+
             sb.Append(fmt::format("store{} {}, {}",
-                                  source.GetType()->GetString(is64Bit),
+                                  type,
                                   source.Emit(is64Bit),
                                   destination.Emit(is64Bit)));
 

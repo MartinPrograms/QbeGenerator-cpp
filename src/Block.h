@@ -279,6 +279,16 @@ namespace Qbe {
             return valueReference;
         }
 
+        [[nodiscard]] bool isTerminated() const {
+            if (instructions.empty()) {
+                return false;
+            }
+            auto* lastInstruction = instructions.back();
+            return dynamic_cast<Instructions::Return*>(lastInstruction) != nullptr ||
+                   (dynamic_cast<Instructions::Jump*>(lastInstruction) != nullptr &&
+                    (dynamic_cast<Instructions::Jump*>(lastInstruction))->type != Instructions::JumpType::Unconditional);
+        }
+
     protected:
         std::string EmitImpl(bool is64Bit) override {
             Utilities::StringBuilder sb;
