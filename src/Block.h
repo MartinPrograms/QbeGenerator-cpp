@@ -320,6 +320,45 @@ namespace Qbe {
             return valueReference;
         }
 
+        ValueReference addConversion(ValueReference source, Primitive* targetType) {
+            Instructions::ConversionType type;
+
+            // we must decide if its Extend, Truncate, IntToFloat or FloatToInt
+            if (source.GetType()->IsInteger() && targetType->IsInteger()) {
+                auto sourceSize = source.GetType()->ByteSize(false);
+                auto targetSize = targetType->ByteSize(false);
+                if (sourceSize < targetSize) {
+                    type = Instructions::ConversionType::Extend;
+                } else if (sourceSize > targetSize) {
+                    type = Instructions::ConversionType::Truncate;
+                } else {
+                    // No conversion needed if sizes are the same, but we will still emit a copy to ensure the correct type is used.
+                    type = Instructions::ConversionType::Extend; // Treat same size integer conversion as an extend, it will just copy the value and change the type.
+                }
+            } else if (source.GetType()->IsFloat() && targetType->IsInteger()) {
+                type = Instructions::ConversionType::FloatToInt;
+            } else if (source.GetType()->IsInteger() && targetType->IsFloat()) {
+                type = Instructions::ConversionType::IntToFloat;
+            } else if (source.GetType()->IsFloat() && targetType->IsFloat()) {
+                auto sourceSize = source.GetType()->ByteSize(false);
+                auto targetSize = targetType->ByteSize(false);
+                if (sourceSize < targetSize) {
+                    type = Instructions::ConversionType::Extend;
+                } else if (sourceSize > targetSize) {
+                    type = Instructions::ConversionType::Truncate;
+                } else {
+                    // No conversion needed if sizes are the same, but we will still emit a copy to ensure the correct type is used.
+                    type = Instructions::ConversionType::Extend; // Treat same size float conversion as an extend, it will just copy the value and change the type.
+                }
+            } else {
+                throw std::runtime_error("Invalid conversion types");
+            }
+
+            Instructions::ConversionSign sign = source.GetType()->IsSigned() ? Instructions::ConversionSign::Signed : Instructions::ConversionSign::Unsigned;
+
+            return addConversion(source, targetType, type, sign);
+        }
+
         [[nodiscard]] bool isTerminated() const {
             if (instructions.empty()) {
                 return false;
