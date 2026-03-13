@@ -248,7 +248,7 @@ namespace Qbe {
             }
 
             auto offset = type->GetByteOffsetOfField(fieldName, is64Bit);
-            ValueReference offsetValue = ValueReference(new Literal(offset, is64Bit));
+            ValueReference offsetValue = ValueReference(new Literal((int64_t)offset, false));
 
             return addArithmetic(structAddress, offsetValue, Instructions::ArithmeticSign::Unsigned, Instructions::ArithmeticOperation::Add);
         }
@@ -265,7 +265,7 @@ namespace Qbe {
             for (int i = 0; i < fieldIndex; i++) {
                 offset += type->fields[i].value->ByteSize(is64Bit);
             }
-            ValueReference offsetValue = ValueReference(new Literal(offset, is64Bit));
+            ValueReference offsetValue = ValueReference(new Literal((int64_t)offset, false));
 
             return addArithmetic(structAddress, offsetValue, Instructions::ArithmeticSign::Unsigned, Instructions::ArithmeticOperation::Add);
         }
@@ -284,7 +284,7 @@ namespace Qbe {
         }
 
         ValueReference addVariadicList(Instructions::VariadicListType* architecture, bool is64Bit) {
-            return addAllocate(Qbe::ValueReference(new Literal(architecture->GetSize(is64Bit), is64Bit)), 4);
+            return addAllocate(Qbe::ValueReference(new Literal((int64_t)architecture->GetSize(is64Bit), false)), 4);
         }
 
         void addVariadicStart(ValueReference list) {
