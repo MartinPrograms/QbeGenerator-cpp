@@ -62,30 +62,54 @@ namespace Qbe {
             return valueReference;
         }
 
-        ValueReference addAdd(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign = Instructions::ArithmeticSign::Signed) {
+        ValueReference addArithmetic(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticOperation operation) {
+            Instructions::ArithmeticSign sign = lhs.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addArithmetic(lhs, rhs, sign, operation);
+        }
+
+        ValueReference addAdd(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign) {
             return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Add);
         }
 
-        ValueReference addSub(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign = Instructions::ArithmeticSign::Signed) {
+        ValueReference addSub(ValueReference lhs, ValueReference rhs) {
+            Instructions::ArithmeticSign sign = lhs.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
             return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Subtract);
         }
 
-        ValueReference addDiv(ValueReference lhs, ValueReference rhs, bool isSigned = true) {
-            return addArithmetic(lhs, rhs, isSigned ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned,
-                                           Instructions::ArithmeticOperation::Divide);
+        ValueReference addSub(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign) {
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Subtract);
+        }
+
+        ValueReference addAdd(ValueReference lhs, ValueReference rhs) {
+            Instructions::ArithmeticSign sign = lhs.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Add);
+        }
+
+        ValueReference addDiv(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign) {
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Divide);
+        }
+
+        ValueReference addDiv(ValueReference lhs, ValueReference rhs) {
+            Instructions::ArithmeticSign sign = lhs.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Divide);
         }
 
         ValueReference addMul(ValueReference lhs, ValueReference rhs) {
             return addArithmetic(lhs, rhs, Instructions::ArithmeticSign::Signed, Instructions::ArithmeticOperation::Multiply);
         }
 
-        ValueReference addRem(ValueReference lhs, ValueReference rhs, bool isSigned = true) {
-            return addArithmetic(lhs, rhs, isSigned ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned,
-                                           Instructions::ArithmeticOperation::Remainder);
+        ValueReference addRem(ValueReference lhs, ValueReference rhs, Instructions::ArithmeticSign sign) {
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Remainder);
+        }
+
+        ValueReference addRem(ValueReference lhs, ValueReference rhs) {
+            Instructions::ArithmeticSign sign = lhs.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addArithmetic(lhs, rhs, sign, Instructions::ArithmeticOperation::Remainder);
         }
 
         ValueReference addNegate(ValueReference value) {
-            return addArithmetic(value, ValueReference(), Instructions::ArithmeticSign::Signed, Instructions::ArithmeticOperation::Negate);
+            Instructions::ArithmeticSign sign = value.GetType()->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addArithmetic(value, ValueReference(), sign, Instructions::ArithmeticOperation::Negate);
         }
 
         ValueReference addBitwise(ValueReference lhs, ValueReference rhs, Instructions::BitwiseOperation operation) {
@@ -126,12 +150,17 @@ namespace Qbe {
             return addShift(lhs, rhs, Instructions::ShiftOperation::ShiftRightArithmetic);
         }
 
-        ValueReference addLoad(ValueReference source, ITypeDefinition* type, Instructions::ArithmeticSign sign = Instructions::ArithmeticSign::Signed) {
+        ValueReference addLoad(ValueReference source, ITypeDefinition* type, Instructions::ArithmeticSign sign) {
             auto* local = createLocal(NameTracker::getNextName(), type);
             auto valueReference = toValueReference(local);
             auto* loadInstruction = new Instructions::Load(source, valueReference, sign);
             addInstruction(loadInstruction);
             return valueReference;
+        }
+
+        ValueReference addLoad(ValueReference source, ITypeDefinition* type) {
+            Instructions::ArithmeticSign sign = type->IsSigned() ? Instructions::ArithmeticSign::Signed : Instructions::ArithmeticSign::Unsigned;
+            return addLoad(source, type, sign);
         }
 
         void addStore(ValueReference source, ValueReference destination) {

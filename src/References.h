@@ -23,18 +23,18 @@ namespace Qbe {
             double f64;
         } value{};
 
-        explicit Literal(int32_t value) {
+        explicit Literal(int32_t value, bool isSigned = true) {
             this->value.i32 = value;
-            type = new Primitive(TypeDefinitionKind::Int32);
+            type = new Primitive(TypeDefinitionKind::Int32, isSigned);
         }
 
-        explicit Literal(int64_t value) {
+        explicit Literal(int64_t value, bool isSigned = true) {
             this->value.i64 = value;
-            type = new Primitive(TypeDefinitionKind::Int64);
+            type = new Primitive(TypeDefinitionKind::Int64, isSigned);
         }
 
         static Literal* CreatePointerLiteral(int64_t value) {
-            Literal* literal = new Literal(value, true);
+            auto* literal = new Literal(value, false);
             literal->type = new Primitive(TypeDefinitionKind::Pointer);
             return literal;
         }
@@ -47,16 +47,6 @@ namespace Qbe {
         explicit Literal(double value) {
             this->value.f64 = value;
             type = new Primitive(TypeDefinitionKind::Float64);
-        }
-
-        explicit Literal(uint64_t value, bool is64Bit) {
-            if (is64Bit) {
-                this->value.i64 = static_cast<int64_t>(value);
-                type = new Primitive(TypeDefinitionKind::Int64);
-            } else {
-                this->value.i32 = static_cast<int32_t>(value);
-                type = new Primitive(TypeDefinitionKind::Int32);
-            }
         }
 
     protected:

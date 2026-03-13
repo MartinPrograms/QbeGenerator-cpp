@@ -117,6 +117,10 @@ namespace Qbe::Instructions{
             return false;
         }
 
+        [[nodiscard]] bool IsSigned() const override  {
+            return false;
+        }
+
     };
 }
 

@@ -46,6 +46,7 @@ namespace Qbe {
 
         [[nodiscard]] virtual std::string GetString(bool is64Bit) const = 0;
         [[nodiscard]] virtual bool IsInteger() const = 0;
+        [[nodiscard]] virtual bool IsSigned() const = 0;
         [[nodiscard]] virtual bool IsFloat() const = 0;
         [[nodiscard]] virtual long ByteSize(bool is64Bit) const = 0;
         [[nodiscard]] virtual bool IsEqual(const ITypeDefinition& other) const = 0;

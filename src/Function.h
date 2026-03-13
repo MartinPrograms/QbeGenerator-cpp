@@ -50,6 +50,9 @@ namespace Qbe {
             return identifier;
         }
         [[nodiscard]] bool IsVoid() const override;
+        [[nodiscard]] bool IsSigned() const override {
+            return false;
+        }
     };
 }
 

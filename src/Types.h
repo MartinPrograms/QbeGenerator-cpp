@@ -15,8 +15,9 @@ namespace Qbe {
     class Primitive : public ITypeDefinition {
     public:
         TypeDefinitionKind kind;
+        bool isSigned;
 
-        explicit Primitive(TypeDefinitionKind kind) : kind(kind) {}
+        explicit Primitive(TypeDefinitionKind kind, bool isSigned = true) : kind(kind), isSigned(isSigned) {}
 
         [[nodiscard]] std::string GetString(bool is64Bit) const override {
             switch (kind) {
@@ -70,6 +71,10 @@ namespace Qbe {
         [[nodiscard]] bool IsVoid() const override {
             return false;
         }
+
+        [[nodiscard]] bool IsSigned() const override {
+            return  isSigned;
+        }
     };
 
     class VoidType : public ITypeDefinition {
@@ -101,6 +106,10 @@ namespace Qbe {
 
         [[nodiscard]] bool IsVoid() const override {
             return true;
+        }
+
+        [[nodiscard]] bool IsSigned() const override {
+            return false;
         }
     };
 
@@ -183,6 +192,10 @@ namespace Qbe {
         }
 
         [[nodiscard]] bool IsInteger() const override {
+            return false;
+        }
+
+        [[nodiscard]] bool IsSigned() const override {
             return false;
         }
 
