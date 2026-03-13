@@ -231,6 +231,18 @@ namespace Qbe {
             return valueReference;
         }
 
+        ValueReference addEquality(ValueReference lhs, ValueReference rhs, Instructions::EqualityOperation operation) {
+            Instructions::EqualityPrimitive primitive;
+            if (lhs.GetType()->IsFloat()) {
+                primitive = Instructions::EqualityPrimitive::Float;
+            } else if (lhs.GetType()->IsInteger()) {
+                primitive = lhs.GetType()->IsSigned() ? Instructions::EqualityPrimitive::Signed : Instructions::EqualityPrimitive::Unsigned;
+            } else {
+                throw std::runtime_error("LHS and RHS types must be either integer or float for equality comparisons");
+            }
+            return addEquality(lhs, rhs, operation, primitive);
+        }
+
         ValueReference allocateType(CustomType* type, bool is64Bit) {
             auto size = addCopy(ValueReference(new Literal(static_cast<ITypeDefinition*>(type)->ByteSize(is64Bit), true))); // Force a 64-bit literal for size
             return addAllocate(size, 4);
