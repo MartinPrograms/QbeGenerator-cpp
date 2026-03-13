@@ -320,8 +320,18 @@ namespace Qbe {
             return valueReference;
         }
 
-        ValueReference addConversion(ValueReference source, Primitive* targetType) {
+        ValueReference addConversion(ValueReference source, Primitive* targetType, bool is64Bit) {
             Instructions::ConversionType type;
+
+            if ((source.GetType()->ByteSize(is64Bit) == targetType->ByteSize(is64Bit) &&
+                source.GetType()->IsInteger() == targetType->IsInteger() &&
+                source.GetType()->IsFloat() == targetType->IsFloat() &&
+                source.GetType()->IsSigned() == targetType->IsSigned()) ||
+                source.GetType()->IsEqual(*targetType)
+                ) {
+                //
+                return addCopy(source, toValueReference(createLocal(NameTracker::getNextName(), targetType)));
+            }
 
             // we must decide if its Extend, Truncate, IntToFloat or FloatToInt
             if (source.GetType()->IsInteger() && targetType->IsInteger()) {
