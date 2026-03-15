@@ -369,6 +369,12 @@ namespace Qbe {
             return addConversion(source, targetType, type, sign);
         }
 
+        ValueReference addBlit(ValueReference source, ValueReference destination, uint64_t size) {
+            auto* blitInstruction = new Instructions::Blit(source, destination, size);
+            addInstruction(blitInstruction);
+            return destination;
+        }
+
         [[nodiscard]] bool isTerminated() const {
             if (instructions.empty()) {
                 return false;

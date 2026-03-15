@@ -15,4 +15,6 @@
 #include "Equality.h"
 #include "Variadic.h"
 #include "Conversion.h"
+#include "Blit.h"
+
 #endif //INSTRUCTIONS_H
