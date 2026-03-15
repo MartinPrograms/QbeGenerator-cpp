@@ -45,7 +45,7 @@ namespace Qbe::Instructions {
             if (!arguments.empty()) {
                 std::vector<std::string> argStrings;
                 for (auto& arg : arguments)
-                    argStrings.push_back(fmt::format("{} {}", arg.GetType()->GetString(is64Bit), arg.Emit(is64Bit)));
+                    argStrings.push_back(fmt::format("{} {}", arg.GetType()->GetBodyString(is64Bit), arg.Emit(is64Bit)));
                 sb.Append(fmt::format("{}", fmt::join(argStrings, ", ")));
             }
             sb.Append(")");

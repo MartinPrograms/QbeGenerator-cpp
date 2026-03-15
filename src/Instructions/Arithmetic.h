@@ -47,7 +47,7 @@ namespace Qbe::Instructions {
             Utilities::StringBuilder sb;
             sb.Append(fmt::format("{} ={} {} {}",
                                   destination.Emit(is64Bit),
-                                  lhs.GetType()->GetString(is64Bit),
+                                  lhs.GetType()->GetBodyString(is64Bit),
                                   operationToString(operation, sign),
                                   lhs.Emit(is64Bit)));
 

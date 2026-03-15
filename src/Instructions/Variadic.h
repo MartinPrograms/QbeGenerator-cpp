@@ -40,7 +40,7 @@ namespace Qbe::Instructions{
         std::string EmitImpl(bool is64Bit) override {
             return fmt::format("{} ={} vaarg {}",
                                result.Emit(is64Bit),
-                               result.GetType()->GetString(is64Bit),
+                               result.GetType()->GetBodyString(is64Bit),
                                list.Emit(is64Bit));
         }
     };

@@ -87,7 +87,7 @@ namespace Qbe::Instructions {
                                   destination.Emit(is64Bit),
                                   Qbe::Primitive(TypeDefinitionKind::Pointer).GetString(is64Bit),
                                   operationToString(operation, primitive),
-                                  lhs.GetType()->GetString(is64Bit),
+                                  lhs.GetType()->GetBodyString(is64Bit),
                                   lhs.Emit(is64Bit),
                                   rhs.Emit(is64Bit)));
 

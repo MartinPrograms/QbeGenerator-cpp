@@ -75,16 +75,16 @@ namespace Qbe::Instructions {
     protected:
         std::string EmitImpl(bool is64Bit) override {
             Utilities::StringBuilder sb;
-            sb.Append(fmt::format("{} ={} ", destination.Emit(is64Bit), destination.GetType()->GetString(is64Bit)));
+            sb.Append(fmt::format("{} ={} ", destination.Emit(is64Bit), destination.GetType()->GetBodyString(is64Bit)));
             if (conversion == ConversionType::Extend) {
                 if (source.GetType()->IsFloat()) {
                     sb.Append(fmt::format("ext{} {}",
-                                          source.GetType()->GetString(is64Bit),
+                                          source.GetType()->GetBodyString(is64Bit),
                                           source.Emit(is64Bit)));
                 }else {
                     sb.Append(fmt::format("ext{}{} {}",
                                           sign == ConversionSign::Signed ? "s" : "u",
-                                          source.GetType()->GetString(is64Bit),
+                                          source.GetType()->GetBodyString(is64Bit),
                                           source.Emit(is64Bit)));
                 }
             }
@@ -93,14 +93,14 @@ namespace Qbe::Instructions {
             }
             else if (conversion == ConversionType::FloatToInt) {
                 sb.Append(fmt::format("{}to{}i {}",
-                                            source.GetType()->GetString(is64Bit),
+                                            source.GetType()->GetBodyString(is64Bit),
                                             sign == ConversionSign::Signed ? "s" : "u",
                                             source.Emit(is64Bit)));
             }
             else if (conversion == ConversionType::IntToFloat) {
                 sb.Append(fmt::format("{}{}tof {}",
                                       sign == ConversionSign::Signed ? "s" : "u",
-                                      source.GetType()->GetString(is64Bit),
+                                      source.GetType()->GetBodyString(is64Bit),
                                       source.Emit(is64Bit)));
             }
 
