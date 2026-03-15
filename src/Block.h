@@ -244,13 +244,13 @@ namespace Qbe {
         }
 
         ValueReference allocateType(CustomType* type, bool is64Bit) {
-            auto size = addCopy(ValueReference(new Literal(static_cast<ITypeDefinition*>(type)->ByteSize(is64Bit), true))); // Force a 64-bit literal for size
+            auto size = addCopy(ValueReference(new Literal((int64_t)static_cast<ITypeDefinition*>(type)->ByteSize(is64Bit), true))); // Force a 64-bit literal for size
             return addAllocate(size, 4);
         }
 
         ValueReference allocateType(CustomType* type, ValueReference count, bool is64Bit) {
             auto typeSize = static_cast<ITypeDefinition*>(type)->ByteSize(is64Bit);
-            auto totalSize = addMul(count, addCopy(ValueReference(new Literal(typeSize, true)))); // Force a 64-bit literal for size
+            auto totalSize = addMul(count, addCopy(ValueReference(new Literal((int64_t)typeSize, true)))); // Force a 64-bit literal for size
             return addAllocate(totalSize, 4);
         }
 
