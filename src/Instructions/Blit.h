@@ -16,11 +16,17 @@ namespace Qbe::Instructions {
         uint64_t byteCount;
 
         explicit Blit(ValueReference sourceAddress, ValueReference destinationAddress, uint64_t byteCount) : sourceAddress(std::move(sourceAddress)), destinationAddress(std::move(destinationAddress)), byteCount(byteCount) {
-            if (sourceAddress.GetType() == nullptr || !sourceAddress.GetType()->IsEqual(Primitive(TypeDefinitionKind::Pointer))) {
-                throw std::runtime_error("Source address must be of pointer type");
+            // Check if both are pointer, or custom type (which is basically a struct, so also a pointer)
+            if (sourceAddress.GetType() == nullptr || destinationAddress.GetType() == nullptr) {
+                throw std::runtime_error("Source and destination address types cannot be null");
             }
-            if (destinationAddress.GetType() == nullptr || !destinationAddress.GetType()->IsEqual(Primitive(TypeDefinitionKind::Pointer))) {
-                throw std::runtime_error("Destination address must be of pointer type");
+
+            if (!sourceAddress.GetType()->IsEqual(Primitive(TypeDefinitionKind::Pointer)) && !sourceAddress.GetType()->IsCustomType()) {
+                throw std::runtime_error("Source address must be of pointer type or custom type");
+            }
+
+            if (!destinationAddress.GetType()->IsEqual(Primitive(TypeDefinitionKind::Pointer)) && !destinationAddress.GetType()->IsCustomType()) {
+                throw std::runtime_error("Destination address must be of pointer type or custom type");
             }
         }
 
