@@ -19,7 +19,7 @@ namespace Qbe::Instructions {
     protected:
         std::string EmitImpl(bool is64Bit) override {
             auto destinationStr = destination.Emit(is64Bit);
-            auto sourceTypeStr = source.GetType()->GetString(is64Bit);
+            auto sourceTypeStr = source.GetType()->GetBodyString(is64Bit);
             auto sourceEmit = source.Emit(is64Bit);
             return fmt::format("{} ={} copy {}",
                                destinationStr,

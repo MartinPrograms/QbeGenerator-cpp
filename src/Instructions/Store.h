@@ -25,7 +25,7 @@ namespace Qbe::Instructions {
                 // We are storing a global variable, which is a pointer.
                 type = Primitive(TypeDefinitionKind::Pointer).GetString(is64Bit);
             else
-                type = source.GetType()->GetString(is64Bit);
+                type = source.GetType()->GetBodyString(is64Bit);
 
             sb.Append(fmt::format("store{} {}, {}",
                                   type,

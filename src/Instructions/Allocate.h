@@ -30,7 +30,7 @@ namespace Qbe::Instructions {
 
     protected:
         std::string EmitImpl(bool is64Bit) override {
-            return fmt::format("{} ={} alloc{} {}", destination.Emit(is64Bit), destination.GetType()->GetString(is64Bit), alignment, size.Emit(is64Bit));
+            return fmt::format("{} ={} alloc{} {}", destination.Emit(is64Bit), destination.GetType()->GetBodyString(is64Bit), alignment, size.Emit(is64Bit));
         }
     };
 }

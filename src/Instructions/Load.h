@@ -23,16 +23,16 @@ namespace Qbe::Instructions {
             if (destination.GetType()->IsEqual(Primitive(TypeDefinitionKind::Int32))) {
                 sb.Append(fmt::format("{} ={} load{}{} {}",
                                       destination.Emit(is64Bit),
-                                      destination.GetType()->GetString(is64Bit),
+                                      destination.GetType()->GetBodyString(is64Bit),
                                       sign == ArithmeticSign::Signed ? "s" : "u",
-                                      destination.GetType()->GetString(is64Bit),
+                                      destination.GetType()->GetBodyString(is64Bit),
                                       source.Emit(is64Bit)));
             }
             else {
                 sb.Append(fmt::format("{} ={} load{} {}",
                                       destination.Emit(is64Bit),
-                                      destination.GetType()->GetString(is64Bit),
-                                      destination.GetType()->GetString(is64Bit),
+                                      destination.GetType()->GetBodyString(is64Bit),
+                                      destination.GetType()->GetBodyString(is64Bit),
                                       source.Emit(is64Bit)));
             }
 

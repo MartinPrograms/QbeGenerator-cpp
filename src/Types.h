@@ -210,6 +210,10 @@ namespace Qbe {
             return ":" + identifier;
         }
 
+        [[nodiscard]] std::string GetBodyString(bool is64Bit) const override {
+            return Primitive(TypeDefinitionKind::Pointer).GetString(is64Bit); // Custom types are represented as pointers in the IR body.
+        }
+
         [[nodiscard]] long ByteSize(bool is64Bit) const override {
             long size = 0;
             for (const auto& field : fields) {

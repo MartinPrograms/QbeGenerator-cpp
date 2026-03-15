@@ -45,6 +45,10 @@ namespace Qbe {
         virtual ~ITypeDefinition() = default;
 
         [[nodiscard]] virtual std::string GetString(bool is64Bit) const = 0;
+        [[nodiscard]] virtual std::string GetBodyString(bool is64Bit) const {
+            return GetString(is64Bit);
+        }
+
         [[nodiscard]] virtual bool IsInteger() const = 0;
         [[nodiscard]] virtual bool IsSigned() const = 0;
         [[nodiscard]] virtual bool IsFloat() const = 0;
