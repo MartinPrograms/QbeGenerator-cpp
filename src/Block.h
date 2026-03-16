@@ -385,6 +385,11 @@ namespace Qbe {
                     (dynamic_cast<Instructions::Jump*>(lastInstruction))->type != Instructions::JumpType::Unconditional);
         }
 
+        void addComment(const std::string& comment) {
+            auto* commentInstruction = new Instructions::Comment(comment);
+            addInstruction(commentInstruction);
+        }
+
     protected:
         std::string EmitImpl(bool is64Bit) override {
             Utilities::StringBuilder sb;

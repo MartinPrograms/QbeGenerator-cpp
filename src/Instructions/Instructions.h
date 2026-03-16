@@ -16,5 +16,6 @@
 #include "Variadic.h"
 #include "Conversion.h"
 #include "Blit.h"
+#include "Comment.h"
 
 #endif //INSTRUCTIONS_H
