@@ -1,6 +1,8 @@
 #ifndef QBEIR_COMMENT_H
 #define QBEIR_COMMENT_H
 
+#include <algorithm>
+
 namespace Qbe::Instructions {
     class Comment : public IInstruction {
     public:
