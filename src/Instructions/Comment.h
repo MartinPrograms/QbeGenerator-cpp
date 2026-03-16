@@ -9,7 +9,11 @@ namespace Qbe::Instructions {
 
     protected:
         std::string EmitImpl(bool is64Bit) override {
-            return fmt::format("# {}", text);
+            // clean up the text so no \n or \t or \r
+            text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+            text.erase(std::remove(text.begin(), text.end(), '\t'), text.end());
+            text.erase(std::remove(text.begin(), text.end(), '\r'), text.end());
+            return fmt::format("# {}{}", text, is64Bit);
         }
     };
 }
