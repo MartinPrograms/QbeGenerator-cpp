@@ -42,10 +42,18 @@ namespace Qbe::Instructions {
 
             sb.Append(fmt::format("${}(", function->identifier));
 
+            bool addedVariadicElipses = false;
+            int i = 0;
             if (!arguments.empty()) {
                 std::vector<std::string> argStrings;
-                for (auto& arg : arguments)
+                for (auto& arg : arguments) {
+                    if (!addedVariadicElipses && function->isVariadic && i >= static_cast<int>(function->parameters.size())) {
+                        argStrings.push_back("...");
+                        addedVariadicElipses = true;
+                    }
                     argStrings.push_back(fmt::format("{} {}", arg.GetType()->GetBodyString(is64Bit), arg.Emit(is64Bit)));
+                    i++;
+                }
                 sb.Append(fmt::format("{}", fmt::join(argStrings, ", ")));
             }
             sb.Append(")");
