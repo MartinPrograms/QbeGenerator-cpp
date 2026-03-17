@@ -48,7 +48,7 @@ namespace Qbe::Instructions {
                 sb.Append(fmt::format("{} ={} call ", result.Emit(is64Bit), returnType->GetString(is64Bit)));
             }
 
-            sb.Append(fmt::format("${}(", identifier));
+            sb.Append(fmt::format("{}(", identifier));
 
             bool addedVariadicElipses = false;
             int i = 0;
