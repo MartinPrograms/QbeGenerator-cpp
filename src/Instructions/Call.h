@@ -9,14 +9,17 @@
 namespace Qbe::Instructions {
     class Call : public IInstruction {
     public:
-        Function* function;
+        std::string identifier;
+        Qbe::ITypeDefinition *returnType;
         std::vector<ValueReference> arguments;
         ValueReference result; // The result of the function call, if any
-        explicit Call(Function* function, std::vector<ValueReference> arguments = {}, ValueReference result = ValueReference())
-            : function(function), arguments(std::move(arguments)), result(std::move(result)) {
-            if (function == nullptr) {
-                throw std::runtime_error("Function cannot be null");
+        explicit Call(std::string identifier, ITypeDefinition* returnType, std::vector<ValueReference> arguments = {}, ValueReference result = ValueReference())
+            : identifier(identifier), returnType(returnType), arguments(std::move(arguments)), result(std::move(result)) {
+
+            if (returnType == nullptr) {
+                throw std::runtime_error("Function return type cannot be null");
             }
+
             if (result.kind != ValueReferenceKind::Empty && result.kind != ValueReferenceKind::Local) {
                 throw std::runtime_error("Result must be a local variable or empty");
             }
@@ -30,17 +33,17 @@ namespace Qbe::Instructions {
             Utilities::StringBuilder sb;
 
             // If the function has a return type, we MUST have a result variable (even if unused)
-            if (function->returnType->IsVoid()) {
+            if (returnType->IsVoid()) {
                 // Ignore the result
                 sb.Append("call ");
             } else {
                 if (result.kind == ValueReferenceKind::Empty) {
                     throw std::runtime_error("Function has a return type, result cannot be empty");
                 }
-                sb.Append(fmt::format("{} ={} call ", result.Emit(is64Bit), function->returnType->GetString(is64Bit)));
+                sb.Append(fmt::format("{} ={} call ", result.Emit(is64Bit), returnType->GetString(is64Bit)));
             }
 
-            sb.Append(fmt::format("${}(", function->identifier));
+            sb.Append(fmt::format("${}(", identifier));
 
             if (!arguments.empty()) {
                 std::vector<std::string> argStrings;

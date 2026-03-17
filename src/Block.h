@@ -208,7 +208,21 @@ namespace Qbe {
             }
 
             auto valueReference = toValueReference(createLocal(NameTracker::getNextName(), function->returnType));
-            auto* callInstruction = new Instructions::Call(function, std::move(arguments), valueReference);
+            auto* callInstruction = new Instructions::Call(function->identifier, function->returnType, std::move(arguments), valueReference);
+            addInstruction(callInstruction);
+            return valueReference;
+        }
+
+        ValueReference addCall(ValueReference functionPointer, ITypeDefinition* returnType, bool is64Bit, std::vector<ValueReference> arguments = {}) {
+            if (functionPointer.GetType() == nullptr) {
+                throw std::runtime_error("Function pointer type cannot be null");
+            }
+            if (returnType == nullptr) {
+                throw std::runtime_error("Function return type cannot be null");
+            }
+
+            auto valueReference = toValueReference(createLocal(NameTracker::getNextName(), returnType));
+            auto* callInstruction = new Instructions::Call(functionPointer.Emit(is64Bit), returnType, std::move(arguments), valueReference);
             addInstruction(callInstruction);
             return valueReference;
         }
