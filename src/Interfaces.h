@@ -56,8 +56,13 @@ namespace Qbe {
         [[nodiscard]] virtual bool IsEqual(const ITypeDefinition& other) const = 0;
         [[nodiscard]] virtual bool IsFunction() const = 0;
         [[nodiscard]] virtual bool IsVoid() const = 0;
+
         [[nodiscard]] bool IsCustomType() const {
             return !IsInteger() && !IsFloat() && !IsVoid() && !IsFunction();
+        }
+
+        [[nodiscard]] virtual bool IsPointer() const {
+            return false;
         }
     };
 

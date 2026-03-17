@@ -75,6 +75,10 @@ namespace Qbe {
         [[nodiscard]] bool IsSigned() const override {
             return  isSigned;
         }
+
+        [[nodiscard]] bool IsPointer() const override {
+            return kind == TypeDefinitionKind::Pointer;
+        }
     };
 
     class VoidType : public ITypeDefinition {
