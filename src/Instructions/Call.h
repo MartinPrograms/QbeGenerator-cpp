@@ -6,15 +6,20 @@
 
 #include <fmt/ranges.h>
 
+#include <utility>
+
 namespace Qbe::Instructions {
     class Call : public IInstruction {
     public:
         std::string identifier;
         Qbe::ITypeDefinition *returnType;
+        bool isVariadic;
+        size_t functionArgumentCount;
         std::vector<ValueReference> arguments;
         ValueReference result; // The result of the function call, if any
-        explicit Call(std::string identifier, ITypeDefinition* returnType, std::vector<ValueReference> arguments = {}, ValueReference result = ValueReference())
-            : identifier(identifier), returnType(returnType), arguments(std::move(arguments)), result(std::move(result)) {
+
+        explicit Call(std::string identifier, ITypeDefinition* returnType, bool isVariadic, size_t functionArgumentCount, std::vector<ValueReference> arguments = {}, ValueReference result = ValueReference())
+            : identifier(std::move(identifier)), returnType(returnType), isVariadic(isVariadic), functionArgumentCount(functionArgumentCount), arguments(std::move(arguments)), result(std::move(result)) {
 
             if (returnType == nullptr) {
                 throw std::runtime_error("Function return type cannot be null");
@@ -50,7 +55,7 @@ namespace Qbe::Instructions {
             if (!arguments.empty()) {
                 std::vector<std::string> argStrings;
                 for (auto& arg : arguments) {
-                    if (!addedVariadicElipses && function->isVariadic && i >= static_cast<int>(function->parameters.size())) {
+                    if (!addedVariadicElipses && isVariadic && i >= static_cast<int>(functionArgumentCount)) {
                         argStrings.push_back("...");
                         addedVariadicElipses = true;
                     }
